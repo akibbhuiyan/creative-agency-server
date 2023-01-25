@@ -18,11 +18,13 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster1.g0q0cnp.mongodb.net/?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-});
+const client = new MongoClient(
+  uri,
+  { useUnifiedTopology: true },
+  { useNewUrlParser: true },
+  { connectTimeoutMS: 30000 },
+  { keepAlive: 1 }
+);
 client.connect((err) => {
   const serviceCollection = client.db("creativeAgency").collection("services");
   const userSelectedCollection = client
@@ -64,9 +66,6 @@ client.connect((err) => {
       });
   });
 
-  userSelectedCollection.insertOne({ name: "akib" }).then(() => {
-    console.log("Name Added");
-  });
   app.post("/serviceDetails", (req, res) => {
     const data = req.body;
 
