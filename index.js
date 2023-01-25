@@ -17,7 +17,7 @@ app.use(fileUpload());
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-const uri = process.env.MONGODB_URI;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster1.g0q0cnp.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -166,4 +166,4 @@ client.connect((err) => {
     });
   });
 });
-app.listen(process.env.PORT);
+app.listen(process.env.PORT || 5000);
